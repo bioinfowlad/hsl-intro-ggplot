@@ -4,3 +4,17 @@
 #+Title: Intro to Data Visualization with ggplot
 #+Author: Strauss Health Sciences Library
 #+Email: wladimir.labeikovsky@cuanschutz.edu
+
+* Intro to Data Visualization with =ggplot=
+
+* What is the Grammar of Graphics?
+
+* How is the Grammar of Graphics implemented in =ggplot=?
+
+* How do these layers apply to your graph?
+
+* aes -> how the data variables map to the elements in the graph (axes, point size, ...)
+
+* geom -> how the data is represented (type of plotting: scatter, line, ...)
+
+* Schematic of =ggplot= syntax

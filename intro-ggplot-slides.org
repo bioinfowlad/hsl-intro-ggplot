@@ -1,0 +1,6 @@
+#+OPTIONS: num:nil toc:nil
+#+REVEAL_TRANS: None/Fade/Slide/Convex/Concave/Zoom
+#+REVEAL_THEME: Black/White/League/Sky/Beige/Simple/Serif/Blood/Night/Moon/Solarized
+#+Title: Intro to Data Visualization with ggplot
+#+Author: Strauss Health Sciences Library
+#+Email: wladimir.labeikovsky@cuanschutz.edu

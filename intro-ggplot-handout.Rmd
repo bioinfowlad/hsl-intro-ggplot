@@ -147,7 +147,7 @@ We want to make the graph above (more or less):
 
 First, let's download and examine the data:
 ```{r}
-download.file(url="https://osf.io/hf2yd/download",destfile="geneexpression.csv")
+download.file(url="https://osf.io/3rwmz/download",destfile="geneexpression.csv")
 genedata <- read.csv("geneexpression.csv")
 # Examine the genedata table, check data types and ranges
 ```
@@ -287,7 +287,7 @@ Alineplot +
 
 ## Resources and where to go from here:
 
-We've covered the very basics of plotting with ggplot (try a Google image search of 'ggplot' or the ggplot extensions gallery at (http://www.ggplot2-exts.org/gallery/) if you don't believe me). Below are some helpful resources to help you learn more:
+We've covered the very basics of plotting with ggplot (try a Google image search of 'ggplot' if you don't believe me). Below are some helpful resources to help you learn more:
 
 - The ggplot official site (https://ggplot2.tidyverse.org/)
 

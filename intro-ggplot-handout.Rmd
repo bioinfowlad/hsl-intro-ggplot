@@ -297,10 +297,10 @@ We've covered the very basics of plotting with ggplot (try a Google image search
 
 - ggplot cookbook (http://www.cookbook-r.com/Graphs/index.html) has some handy tricks for quick lookup.
 
-- Another "cookbook" for ggplot code is maintained by Jennifer Bryan at (http://shiny.stat.ubc.ca/r-graph-catalog/)
+- Another "cookbook" for ggplot code is maintained by Jennifer Bryan at (https://github.com/jennybc/r-graph-catalog)
 
 - Don't forget the R-bloggers blog aggregator (https://www.r-bloggers.com/) is also invaluable, alongside the usual suspects like Stack Overflow when looking for starting points. E.g. search for 'gene heatmaps' to see how different people handle plotting microarray data instead of figuring it out from scratch.
 
-- Another, more beginner-friednly aggregator is the *Awesome-R* site. Check out the Graphics section: (https://awesome-r.com/#awesome-r-graphic-displays)
+- Another, more beginner-friednly aggregator is the *Awesome-R* site. Check out the Graphics section: (https://github.com/qinwf/awesome-R#graphic-displays)
 
 - To become a true ggplot expert, you'll probably have to go through Hadley Wickham's "ggplot2: Elegant Graphics for Data Analysis" book. Buy it from Amazon, request it from the library, or build it from source at (https://github.com/hadley/ggplot2-book).

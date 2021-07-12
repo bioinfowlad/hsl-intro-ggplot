@@ -2,7 +2,8 @@
 title: "Intro to Data Visualization with ggplot"
 author: "Strauss Health Sciences Library"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
-output: pdf_document
+output:
+  tufte::tufte_handout: default
 ---
 
 ```{r setup, include=FALSE}
@@ -11,17 +12,17 @@ knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
 
 This is material largely adapted from Software Carpentry and Data Carpentry lessons as well as from tutorials and writings from Omayma Said, Hadley Wickham, Anne Segonds-Pichon, and Kieran Healy. We're always on the lookout for more relevant and directly applicable problems and datasets for the demonstrations, so feel free to contact us if you have any...
 
-## Learning objectives
+# Learning objectives
 
-### After completing this tutorial you will be:
+## After completing this tutorial you will be:
 
 - Familiar with the concepts behind ggplot
 - Familiar with the ggplot core syntax
 - Able to create basic graphs using the ggplot elements
 
-## Prerequisites
+# Prerequisites
 
-### Before starting this tutorial you should know:
+## Before starting this tutorial you should know:
 
 - Your way around the RStudio interface
 - Basic R syntax and concepts
@@ -30,13 +31,13 @@ This is material largely adapted from Software Carpentry and Data Carpentry less
 - How to install and call R packages
 - Make sure you have the ggplot2 package installed
 
-## What is ggplot?
+# What is ggplot?
 
 You may already be familiar with R's base plotting capabilities. Generally speaking, the base plotting functions tell R how to *draw* your graph. For example, base R plotting knows how to draw a bar graph, but we must tell it how to draw error bars. ggplot is an R package that implements a different way to instruct R to graph data by *declaring* the properties of the desired graph and having R/ggplot combine them.
 
 For very simple data graphics, base and ggplot code is not that much different. The power of ggplot starts to become apparent the more elaborate your visualization needs to be.
 
-## Getting started
+# Getting started
 
 Make sure you have an R/RStudio install, settle into a working directory and, if you don't have ggplot installed:
 
@@ -45,7 +46,7 @@ install.packages("ggplot2")
 library(ggplot2)
 ```
 
-## Comparison example
+# Comparison example
 
 Let's start with plotting our old friend, the E.Coli strains dataset, with the base R plotting functions
 
@@ -62,7 +63,7 @@ So far, so good. To customize our plot, we need to refer to the graphical elemen
 plot(genomesize, pch=8, main="Scatter plot of genome sizes")
 ```
 
-## The ggplot way...
+# The ggplot way...
 
 With the Grammar of Graphics, we declare elements of our plot (variables, axes,...) and how they map to graphical characteristics. It's helpful to think about it as building the plot by layers.
 
@@ -106,7 +107,7 @@ myfancyplot
 
 Reading the geom_point documentation, we see that we can define size to customize.
 
-## The boxplot example
+# The boxplot example
 
 Recall how we did a boxplot of this EColi data...
 
@@ -135,7 +136,7 @@ So far, you should have some idea of how the ggplot syntax works. For these simp
 
 \pagebreak
 
-## Group exercise: Make a volcano plot
+# Group exercise: Make a volcano plot
 
 From wikipedia:
 
@@ -164,7 +165,7 @@ Let's do this as a group exercise, look at the goal and ask yourselves:
 
 Remember you can save your "scratchpad" as an R script for future reference...
 
-## Working with gapminder data
+# Working with gapminder data
 
 Next, we will work with the gapminder dataset, a table of country-wide statistics. If you are on your own computer you can just install the data as a package:
 
@@ -185,7 +186,7 @@ load("gapminder.rdata")
 
 Remember to inspect your data after import...
 
-## Plotting gapminder data
+# Plotting gapminder data
 
 Let's start with a simple scatter of GDP per capita versus Life Expectancy
 
@@ -193,9 +194,9 @@ Let's start with a simple scatter of GDP per capita versus Life Expectancy
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 ```
 
-### Exercise: Plot how life expectancy has changed over time
+## Exercise: Plot how life expectancy has changed over time
 
-### Exercise: Plot how life expectancy has changed over time per continent
+## Exercise: Plot how life expectancy has changed over time per continent
 
 Since we are looking at changes over time, maybe a line plot is better:
 
@@ -219,7 +220,7 @@ ggplot(data=gapminder, aes(x = year, y = lifeExp, by=country)) +
 
 And now you see why we can write aes inside geoms: we may wish to map different variables/visuals to different elements of our plot. In this case, we drew a scatterplot on top of a line plot (Test for yourself by switching the order of the geoms). By the way, why did we not write an aes inside the geom_point in the example above?
 
-## Plotting with transforms and stats
+# Plotting with transforms and stats
 
 Let's go back to our first gapminder plot
 
@@ -243,11 +244,11 @@ firstgap + geom_smooth(method="lm") #Trying a linear fit
 
 Note that the geom_smooth layer took account of our global groupings before adding the fit.
 
-### Exercise: modify the plot so that we end up with a single linear fit of all the data
+## Exercise: modify the plot so that we end up with a single linear fit of all the data
 
 Note how the modularity of the ggplot syntax makes it easier to modify the plot in non-trivial ways.
 
-## More customization
+# More customization
 
 Let's get back to our line plot. It was pretty busy. Faceting the data may make the data more readable:
 
@@ -283,9 +284,9 @@ Alineplot +
 
 \pagebreak
 
-### Optional exercise: Make a density plot (see geom_density documentation) of GDP per capita by continent, faceted per year
+## Optional exercise: Make a density plot (see geom_density documentation) of GDP per capita by continent, faceted per year
 
-## Resources and where to go from here:
+# Resources and where to go from here:
 
 We've covered the very basics of plotting with ggplot (try a Google image search of 'ggplot' if you don't believe me). Below are some helpful resources to help you learn more:
 

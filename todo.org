@@ -1,10 +1,11 @@
+#+TITLE: Training materials for ggplot class evolution
+
 * TODO: https://rafalab.github.io/ds4stats/
 * TODO: https://datacarpentry.org/genomics-r-intro/05-data-visualization/index.html
-* TODO: https://bookdown.org/martin_monkman/DataScienceResources_book/datavisualization.html#ggplot2-the-pre-eminent-way-to-create-charts-and-graphs-in-r
+* TODO: https://bookdown.org/martin_monkman/DataScienceResources_book/datavisualization.html
 * TODO: http://stat545.com/graph00_index.html
 * TODO: http://stat545.com/block019_enforce-color-scheme.html
 * TODO: http://stat545.com/block016_secrets-happy-graphing.html
 * TODO: http://stat545.com/block020_multiple-plots-on-a-page.html
-* TODO: http://girke.bioinformatics.ucr.edu/GEN242/mydoc_Rgraphics_5.html
 * TODO: https://uclouvain-cbio.github.io/WSBIM1207/sec-vis.html
 * TODO: https://ucsdlib.github.io/workshops/ggplot.html

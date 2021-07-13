@@ -70,7 +70,7 @@ Let's start with plotting our old friend, the E.Coli strains dataset, with the b
 ```{marginfigure, echo=TRUE}
 Making a scatter plot of the *genome_size* column of the dataset
 ```
-```{r}
+```{r, eval=TRUE, message=FALSE, fig.margin=TRUE}
 download.file(url="https://osf.io/ga9re/download", 
               destfile="ecolidata.csv")
 straindata <- read.csv("ecolidata.csv")
@@ -146,11 +146,19 @@ myfancyplot
 ```
 
 Reading the geom_point documentation, we see that we can define visual attributes to customize, either by mapping them to variables or by specifying in them directly.
-
+```{r geomtable, echo=FALSE, eval=TRUE}
+gtable <- data.frame("geom function" = "geom_point()",
+                    "required mapping" = "x: , y:",
+                    "optional mapping" = "color, size, fill, shape, alpha")
+knitr::kable(gtable, caption = "geom_point()'s mappings")
+```
 # The boxplot example
 
 Recall how we did a boxplot of this EColi data...
 
+```{marginfigure, echo=TRUE}
+*Y ~ X* is called _formula syntax_ in R
+```
 ```{r}
 boxplot(genome_size ~ cit, straindata,
         col=c("pink", "purple", "darkgrey"),
@@ -158,9 +166,9 @@ boxplot(genome_size ~ cit, straindata,
         ylab="Genome Size")
 ```
 
-This is the ggplot equivalent. Note that we can write the mapping inside the geom if we wish.
+Below is the ggplot equivalent. Note that we can write the mapping inside the geom if we wish.
 
-```{r}
+```{r, eval=TRUE,fig.margin=TRUE}
 myboxplot <- ggplot(straindata) +
   geom_boxplot(aes(x=cit, y=genome_size, fill=cit))
 myboxplot
@@ -174,9 +182,7 @@ To save plots from within R code:
 ggsave("boxplot.pdf", myboxplot)
 ```
 
-So far, you should have some idea of how the ggplot syntax works. For these simple plots, you may note that we don't save much in typing versus base plots (though we gain in better-looking plots by default). We will run through a few more examples to show some of the advantages versus base functions.
-
-\pagebreak
+So far, you should have _some_ idea of how the ggplot syntax works. For these simple plots, you may note that we don't save much in typing versus base plots (though we gain in better-looking plots by default). We will run through a few more examples to show some of the advantages versus base functions.
 
 # Step-by-step: Make a volcano plot
 
@@ -221,9 +227,9 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 ```
 
-## Exercise: Plot how life expectancy has changed over time
+## Optional Exercise: Plot how life expectancy has changed over time
 
-## Exercise: Plot how life expectancy has changed over time per continent
+## Optional Exercise: Plot how life expectancy has changed over time per continent
 
 Since we are looking at changes over time, maybe a line plot is better:
 
@@ -259,14 +265,18 @@ And now you see why we can write aes inside geoms: we may wish to map different 
 Let's go back to our first gapminder plot
 
 ```{r}
-ggplot(data=gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point()
+ggplot(data=gapminder, aes(x=gdpPercap, y=lifeExp,
+                           color=continent)) +
+  geom_point()
 ```
 
 Points are kind of smushed together. We can make it easier to see by changing the x axis scale and by making them a bit transparent:
 
 ```{r}
-firstgap <- ggplot(data=gapminder, aes(x=gdpPercap, y=lifeExp, color=continent)) +
-  geom_point(alpha = 0.5) + scale_x_log10()
+firstgap <- ggplot(data=gapminder, aes(x=gdpPercap, y=lifeExp,
+                                       color=continent)) +
+  geom_point(alpha = 0.5) +
+  scale_x_log10()
 firstgap
 ```
 
@@ -276,18 +286,16 @@ Besides this kind of transform, we can add some fits to our plot:
 firstgap + geom_smooth(method="lm") #Trying a linear fit
 ```
 
-Note that the geom_smooth layer took account of our global groupings before adding the fit.
-
-## Exercise: modify the plot so that we end up with a single linear fit of all the data
-
-Note how the modularity of the ggplot syntax makes it easier to modify the plot in non-trivial ways.
+Note that the geom_smooth layer took account of our global groupings before adding the fit. Also note how the modularity of the ggplot syntax makes it easier to modify the plot in non-trivial ways.
 
 # More customization
 
 Let's get back to our line plot. It was pretty busy. Faceting the data may make the data more readable:
 
 ```{r}
-mylines <- ggplot(data=gapminder, aes(x=year, y=lifeExp, color=continent, by=country)) +
+mylines <- ggplot(data=gapminder, aes(x=year, y=lifeExp,
+                                      color=continent,
+                                      by=country)) +
   geom_line()
 mylines
 mylines + facet_wrap( ~ country)
@@ -302,17 +310,25 @@ For the next example, let's try working on a subset of the countries...
 beginletter <- substr(gapminder$country, start=1, stop=1)
 # grab only the data from countries that start with A
 A.countries <- gapminder[beginletter == "A", ]
-Alineplot <- ggplot(data=A.countries, aes(x=year, y=lifeExp, color=continent)) +
+Alineplot <- ggplot(data=A.countries, aes(x=year, y=lifeExp,
+                                          color=continent)) +
   geom_line() + facet_wrap( ~ country)
 Alineplot
 ```
 
 So seven plots renders a bit quicker... Still, this ain't ready for publication quite yet. We can further customize the text by changing the label and theme layers:
 
+```{marginfigure, echo=TRUE}
+The parameters (x, y, color) passed to the *labs* function are visual attributes but not mapped to data variable names.
+
+The *theme* function allows through its parameters to customize virtually any visual characteristic of the final plot, but there are pre-defined themes that can be used instead as a layer.
+```
 ```{r}
 Alineplot +
-  labs(x="Year", y="Life Expectancy", title="Figure 1", color="Continent") +
-  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
+  labs(x="Year", y="Life Expectancy",
+       title="Figure 1", color="Continent") +
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 # Getting rid of x-ticks and text
 ```
 
@@ -326,13 +342,13 @@ We've covered the very basics of plotting with ggplot (try a Google image search
 
 - The ggplot official site (https://ggplot2.tidyverse.org/)
 
-- The R for Data Science book (free at https://r4ds.had.co.nz) is pretty much indispensable to start learning how to do modern data analysis and data visualization with R/RStudio.
+- The R for Data Science book (free at https://r4ds.had.co.nz) is pretty much indispensable to start learning how to do modern data analysis and data visualization with R/RStudio. Chapter 3 is all about 'ggplot'.
 
 - Data Visualization: A practical introduction (free at https://socviz.co/) is a shorter introduction to the same topics, though not just visualizaiton. Though most of the examples are sociology-flavored, it may be a better starting point than the encyclopedic R4DS book.
 
 - Another "cookbook" for ggplot code is maintained by Jennifer Bryan at (https://github.com/jennybc/r-graph-catalog)
 
-- Another, more beginner-friednly aggregator is the *Awesome-R* site. Check out the Graphics section: (https://github.com/qinwf/awesome-R#graphic-displays)
+- The *Awesome-R* site aggregates the best-loved resources and packages for R. Check out the Graphics section  (https://github.com/qinwf/awesome-R#graphic-displays) to see some of the 'ggplot' extensions available.
 
 - To become a true ggplot expert, you'll probably have to go through Hadley Wickham's "ggplot2: Elegant Graphics for Data Analysis" book. Buy it from Amazon, request it from the library, or build it from source at (https://github.com/hadley/ggplot2-book).
 

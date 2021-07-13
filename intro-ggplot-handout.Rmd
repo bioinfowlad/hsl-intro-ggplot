@@ -8,12 +8,13 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE)
+library(tidyverse)
 ```
 
-This is material largely adapted from Software Carpentry and Data Carpentry lessons as well as from tutorials and writings from Omayma Said, Hadley Wickham, Anne Segonds-Pichon, and Kieran Healy. We're always on the lookout for more relevant and directly applicable problems and datasets for the demonstrations, so feel free to contact us if you have any...
-
 # Learning objectives
-
+```{marginfigure, echo=TRUE}
+![](images/gglogo.png)
+```
 ## After completing this tutorial you will be:
 
 - Familiar with the concepts behind ggplot
@@ -32,15 +33,31 @@ This is material largely adapted from Software Carpentry and Data Carpentry less
 - Make sure you have the ggplot2 package installed
 
 # What is ggplot?
-
+```{r base-example, echo=FALSE, eval=TRUE, fig.margin=TRUE, fig.cap="Plot using base functions"}
+mtcars2 <- mtcars
+mtcars2$am <- factor(mtcars$am, labels = c("Sample 1", "Sample 2"))
+mutate(mtcars2,manual = ifelse(am=="Sample 1",mpg,NA)) -> mtcars2
+mutate(mtcars2,auto = ifelse(am=="Sample 2",mpg,NA)) -> mtcars2
+plot(mtcars2$hp, mtcars2$auto,col="blue",pch="*",xlab="timepoints",ylab="activity",main="Two sample assay")
+points(mtcars2$hp, mtcars2$manual, col="red",pch="+")
+```
 You may already be familiar with R's base plotting capabilities. Generally speaking, the base plotting functions tell R how to *draw* your graph. For example, base R plotting knows how to draw a bar graph, but we must tell it how to draw error bars. ggplot is an R package that implements a different way to instruct R to graph data by *declaring* the properties of the desired graph and having R/ggplot combine them.
 
+```{r gg-example, echo=FALSE, eval=TRUE, fig.margin=TRUE, fig.cap="Plot using ggplot",message=FALSE}
+ggplot(mtcars2, aes(x=hp,y=mpg,color=am)) +
+  geom_point() + geom_smooth() + theme(legend.position="bottom") +
+  labs(title="Two sample assay",
+       x="timepoints",y="activity")
+```
 For very simple data graphics, base and ggplot code is not that much different. The power of ggplot starts to become apparent the more elaborate your visualization needs to be.
 
 # Getting started
 
 Make sure you have an R/RStudio install, settle into a working directory and, if you don't have ggplot installed:
 
+```{marginfigure, echo=TRUE}
+If you already installed the **tidyverse** package you don't need to install **ggplot2** since it is included
+```
 ```{r}
 install.packages("ggplot2")
 library(ggplot2)
@@ -50,8 +67,12 @@ library(ggplot2)
 
 Let's start with plotting our old friend, the E.Coli strains dataset, with the base R plotting functions
 
+```{marginfigure, echo=TRUE}
+Making a scatter plot of the *genome_size* column of the dataset
+```
 ```{r}
-download.file(url="https://osf.io/ga9re/download", destfile="ecolidata.csv")
+download.file(url="https://osf.io/ga9re/download", 
+              destfile="ecolidata.csv")
 straindata <- read.csv("ecolidata.csv")
 genomesize <- straindata$genome_size
 plot(genomesize)
@@ -59,6 +80,9 @@ plot(genomesize)
 
 So far, so good. To customize our plot, we need to refer to the graphical elements, like point symbol (pch) and title (main):
 
+```{marginfigure, echo=TRUE}
+The _pch_ parameter specifies the datapoint symbol and the _main_ parameter specifies the plot title
+```
 ```{r}
 plot(genomesize, pch=8, main="Scatter plot of genome sizes")
 ```
@@ -67,29 +91,39 @@ plot(genomesize, pch=8, main="Scatter plot of genome sizes")
 
 With the Grammar of Graphics, we declare elements of our plot (variables, axes,...) and how they map to graphical characteristics. It's helpful to think about it as building the plot by layers.
 
+```{marginfigure, echo=TRUE}
+![](images/layers.png)
+```
 ```{r}
 ggplot(straindata) #Why is this blank?
 ggplot(straindata) + geom_point() #Check the error message
 ```
 
-ggplot expects that we declare the mapping of variables to visuals before plotting (Recall the layers slide).
+ggplot expects that we declare the mapping of variables to visuals before plotting.
 Note also how the plot can be built by *adding* elements and layers.
 
+```{marginfigure, echo=TRUE}
+![](images/syntax.png)
+```
 ```{r}
-ggplot(data=straindata, mapping=aes(x=sample, y=genome_size)) #data= and mapping= are optional
+ggplot(data=straindata, mapping=aes(x=sample, y=genome_size))
+#data= and mapping= are optional
 ```
 
 Now let's add how we want the points to look like:
 
 ```{r}
-ggplot(data=straindata, mapping=aes(x=sample, y=genome_size)) + geom_point()
+ggplot(data=straindata, mapping=aes(x=sample, y=genome_size)) +
+  geom_point()
 # Data layer + Mapping layer + Points layer
 ```
 
 Let's customize a bit more but, to save typing, let's start storing our plot into an object:
 
 ```{r}
-myplot <- ggplot(data=straindata, mapping=aes(x=sample, y=genome_size)) + geom_point()
+myplot <- ggplot(data=straindata,
+                 mapping=aes(x=sample, y=genome_size)) +
+  geom_point()
 myplot + ggtitle("Scatter plot of genome sizes")
 myplot + ggtitle("Scatter plot of genome sizes") + theme_bw()
 # Added a built-in theme to the theme layer
@@ -99,21 +133,29 @@ See the ggplot theme documentation for an idea of what other visual customizatio
 
 Visual elements, not just axes, can be mapped to variables. Can you tell what is going on here?
 
+```{marginfigure, echo=TRUE}
+Mapping multiple data variables to visual attributes of a 2D plot
+```
 ```{r}
-myfancyplot <- ggplot(straindata, aes(x=sample, y=genome_size, color=generation, shape=cit))+
+myfancyplot <- ggplot(straindata, aes(x=sample,
+                                      y=genome_size,
+                                      color=generation,
+                                      shape=cit))+
   geom_point()
 myfancyplot
 ```
 
-Reading the geom_point documentation, we see that we can define size to customize.
+Reading the geom_point documentation, we see that we can define visual attributes to customize, either by mapping them to variables or by specifying in them directly.
 
 # The boxplot example
 
 Recall how we did a boxplot of this EColi data...
 
 ```{r}
-boxplot(genome_size ~ cit, straindata, col=c("pink", "purple", "darkgrey"),
-        main="Average Expresion Differences", ylab="Genome Size")
+boxplot(genome_size ~ cit, straindata,
+        col=c("pink", "purple", "darkgrey"),
+        main="Average Expresion Differences",
+        ylab="Genome Size")
 ```
 
 This is the ggplot equivalent. Note that we can write the mapping inside the geom if we wish.
@@ -136,52 +178,36 @@ So far, you should have some idea of how the ggplot syntax works. For these simp
 
 \pagebreak
 
-# Group exercise: Make a volcano plot
+# Step-by-step: Make a volcano plot
 
 From wikipedia:
 
 >In statistics, a volcano plot is a type of scatter-plot that is used to quickly identify changes in large data sets composed of replicate data. It plots significance versus fold-change on the y and x axes, respectively. These plots are increasingly common in omic experiments such as genomics, proteomics, and metabolomics where one often has a list of many thousands of replicate data points between two conditions and one wishes to quickly identify the most meaningful changes. 
 
-We want to make the graph above (more or less):
+We want to make the graph below (more or less):
 
-![Our volcano plot goal](volcano.png)
-
+![Our volcano plot goal](images/volcano.png)
 First, let's download and examine the data:
 ```{r}
 download.file(url="https://osf.io/3rwmz/download",destfile="geneexpression.csv")
 genedata <- read.csv("geneexpression.csv")
 # Examine the genedata table, check data types and ranges
 ```
-
-Let's do this as a group exercise, look at the goal and ask yourselves:
+Look at the goal and ask:
 
 - What are we mapping?
-
-- Do we need to manipulate the data first?
-
 - What are the geometric objects and how do their properties match?
-
-- What customizations and refinements would we want to employ?
 
 Remember you can save your "scratchpad" as an R script for future reference...
 
 # Working with gapminder data
 
-Next, we will work with the gapminder dataset, a table of country-wide statistics. If you are on your own computer you can just install the data as a package:
+Next, we will work with the gapminder dataset, a table of country-wide statistics. You can just install the data as a package:
 
 ```{r}
 # If you are on your own computer
 install.packages("gapminder")
 library(gapminder)
-```
-
-If you are in one of our teaching lab computers, you won't be allowed to install packages, but you can download the data table directly:
-
-```{r}
-# If on the Teaching Lab computers:
-download.file("https://github.com/jennybc/gapminder/raw/master/data/gapminder.rdata",
-              destfile="gapminder.rdata")
-load("gapminder.rdata")
 ```
 
 Remember to inspect your data after import...
@@ -191,7 +217,8 @@ Remember to inspect your data after import...
 Let's start with a simple scatter of GDP per capita versus Life Expectancy
 
 ```{r}
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()
 ```
 
 ## Exercise: Plot how life expectancy has changed over time
@@ -201,21 +228,28 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 Since we are looking at changes over time, maybe a line plot is better:
 
 ```{r}
-ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent)) + geom_line()
+ggplot(data = gapminder, aes(x = year, y = lifeExp,
+                             color=continent)) +
+  geom_line()
 ```
 
 Well, that's confusing. Can you tell why? (hint: look at how the data table is shaped)
 
 ```{r}
-ggplot(data = gapminder, aes(x = year, y = lifeExp, color=continent, by=country)) + geom_line()
+ggplot(data = gapminder, aes(x = year, y = lifeExp,
+                             color=continent,
+                             by=country)) +
+  geom_line()
 # by is a grouping parameter
 ```
 
 What if we want both lines and points? Remember drawing is in layers:
 
 ```{r}
-ggplot(data=gapminder, aes(x = year, y = lifeExp, by=country)) +
-  geom_line(aes(color=continent)) + geom_point(color="black")
+ggplot(data=gapminder, aes(x = year, y = lifeExp,
+                           by=country)) +
+  geom_line(aes(color=continent)) +
+  geom_point(color="black")
 ```
 
 And now you see why we can write aes inside geoms: we may wish to map different variables/visuals to different elements of our plot. In this case, we drew a scatterplot on top of a line plot (Test for yourself by switching the order of the geoms). By the way, why did we not write an aes inside the geom_point in the example above?
@@ -301,3 +335,7 @@ We've covered the very basics of plotting with ggplot (try a Google image search
 - Another, more beginner-friednly aggregator is the *Awesome-R* site. Check out the Graphics section: (https://github.com/qinwf/awesome-R#graphic-displays)
 
 - To become a true ggplot expert, you'll probably have to go through Hadley Wickham's "ggplot2: Elegant Graphics for Data Analysis" book. Buy it from Amazon, request it from the library, or build it from source at (https://github.com/hadley/ggplot2-book).
+
+# Acknowledgements
+
+This is material largely adapted from Software Carpentry and Data Carpentry lessons as well as from tutorials and writings from Omayma Said, Hadley Wickham, Anne Segonds-Pichon, and Kieran Healy. We're always on the lookout for more relevant and directly applicable problems and datasets for the demonstrations, so feel free to contact us if you have any.

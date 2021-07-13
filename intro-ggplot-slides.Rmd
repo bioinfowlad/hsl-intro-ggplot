@@ -3,35 +3,43 @@ title: "Intro to Data Visualization with ggplot"
 subtitle: "Strauss Health Sciences Library"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
-  xaringan::moon_reader:
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      highlightLines: true
-      countIncrementalSlides: false
+  revealjs::revealjs_presentation:
+    transition: none
 ---
-
+<!-- Have to put these styles 'cause pandoc+revealjs not working -->
+<style>
+.column-left{
+  float: left;
+  width: 60%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 40%;
+  text-align: right;
+}
+</style>
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
 library(tidyverse)
-library(flipbookr)
 ```
 
 # What is the Grammar of Graphics?
----
+
+
 # How is the Grammar of Graphics Implemented in ggplot?
----
+
+
 # How do these layers apply to your graph?
 
->-  aes -> how the data variables map to the elements in the graph (axes, point size, ...)
->- geom -> how the data is represented (type of plotting: scatter, line, ...)
----
+> -  aes -> how the data variables map to the elements in the graph (axes, point size, ...)
+> -  geom -> how the data is represented (type of plotting: scatter, line, ...)
+
 # Schematic of ggplot syntax
 ```{r example, eval=FALSE}
 p <- ggplot(data=<data>,
-            mapping=aes(<aesthetic>=<variable>,
-                        <aesthetic>=<variable>,
-                        <...>=<...>)
+            mapping=aes(<aesthetic> = variable,
+                        <aesthetic> = variable,
+                        <...> = ...)
 
 p + geom_<type>(<...>)+
 scale_<mapping>_<type>(<...>)+
@@ -39,18 +47,17 @@ coord_<type>(<...>)+
 labs(<...>)
 ```
 
----
-`r chunk_reveal("my_cars")`
+# Could it be this difficult?
 
-```{r my_cars, include = FALSE}
-cars %>%
-  filter(speed > 4) %>%
-  ggplot() +
-  aes(x = speed) + #BREAK
-  aes(y = dist) + #BREAK
-  geom_point(
-    alpha = .8, 
-    color = "blue" 
-    ) + 
-  aes(size = speed) #BREAK
+::: {.column-left}
+```{r echo=TRUE,eval=FALSE}
+plot(iris[,-5])
 ```
+:::
+::: {.column-right}
+```{r echo=FALSE}
+plot(iris[,-5])
+```
+:::
+
+  

@@ -282,9 +282,9 @@ Alineplot +
 # Getting rid of x-ticks and text
 ```
 
-\pagebreak
-
 ## Optional exercise: Make a density plot (see geom_density documentation) of GDP per capita by continent, faceted per year
+
+\pagebreak
 
 # Resources and where to go from here:
 
@@ -296,11 +296,7 @@ We've covered the very basics of plotting with ggplot (try a Google image search
 
 - Data Visualization: A practical introduction (free at https://socviz.co/) is a shorter introduction to the same topics, though not just visualizaiton. Though most of the examples are sociology-flavored, it may be a better starting point than the encyclopedic R4DS book.
 
-- ggplot cookbook (http://www.cookbook-r.com/Graphs/index.html) has some handy tricks for quick lookup.
-
 - Another "cookbook" for ggplot code is maintained by Jennifer Bryan at (https://github.com/jennybc/r-graph-catalog)
-
-- Don't forget the R-bloggers blog aggregator (https://www.r-bloggers.com/) is also invaluable, alongside the usual suspects like Stack Overflow when looking for starting points. E.g. search for 'gene heatmaps' to see how different people handle plotting microarray data instead of figuring it out from scratch.
 
 - Another, more beginner-friednly aggregator is the *Awesome-R* site. Check out the Graphics section: (https://github.com/qinwf/awesome-R#graphic-displays)
 

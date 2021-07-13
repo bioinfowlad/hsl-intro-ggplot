@@ -4,11 +4,21 @@ subtitle: "Strauss Health Sciences Library"
 date: '`r format(Sys.Date(), "%B %d, %Y")`'
 output:
   revealjs::revealjs_presentation:
-    theme: night
-    highlight: zenburn
     transition: none
 ---
-
+<!-- Have to put these styles 'cause pandoc+revealjs not working -->
+<style>
+.column-left{
+  float: left;
+  width: 60%;
+  text-align: left;
+}
+.column-right{
+  float: right;
+  width: 40%;
+  text-align: right;
+}
+</style>
 ```{r setup, include=FALSE}
 library(tidyverse)
 ```
@@ -37,3 +47,17 @@ coord_<type>(<...>)+
 labs(<...>)
 ```
 
+# Could it be this difficult?
+
+::: {.column-left}
+```{r echo=TRUE,eval=FALSE}
+plot(iris[,-5])
+```
+:::
+::: {.column-right}
+```{r echo=FALSE}
+plot(iris[,-5])
+```
+:::
+
+  

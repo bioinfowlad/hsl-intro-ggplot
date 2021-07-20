@@ -1,5 +1,5 @@
 #+TITLE: Training materials for ggplot class evolution
-
+#+SUBTITLE: Don't forget reveal
 * TODO: https://rafalab.github.io/ds4stats/
 * TODO: https://datacarpentry.org/genomics-r-intro/05-data-visualization/index.html
 * TODO: https://bookdown.org/martin_monkman/DataScienceResources_book/datavisualization.html
